@@ -180,11 +180,18 @@ service, so no OSF/DataPipe dependency.
    - Put the completion URL in `config.js` → `completionUrl`.
    - Restrict the study to desktop devices.
 6. **Ethics.**
-   - Fill in the consent text in `index.html`. It contains a placeholder for institution,
-     approval number and contact.
-   - Obtain approval (or an exemption) from your institution before recruiting.
-   - Data are anonymous apart from the Prolific ID, which is needed for payment. Delete it from
-     the analysis files after payment.
+   - The study is run by the first author as an individual; no institutional ethics board is
+     available. It is minimal-risk (watching plain animations, answering questions), unpaid and
+     anonymous, and every participant gives informed consent on the first page (`index.html`):
+     voluntary participation, withdrawal at any time, data kept under an ID only, results
+     published in aggregate, age 18 or over.
+   - The list linking IDs to people is kept apart from the data and deleted when the study ends.
+   - Suggested statement for the paper: "All participants gave informed consent. The study was
+     conducted by the first author, involved only viewing computer-generated animations and
+     answering questions, posed minimal risk, and stored data under anonymous IDs. No
+     institutional ethics board was available."
+   - `config.js` → `version` is shown on every page and saved with the data. Bump it whenever
+     trials, stimuli or wording change, and analyse each version separately.
 
 ## 7. Pilot
 

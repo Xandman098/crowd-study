@@ -10,7 +10,7 @@ const $ = sel => document.querySelector(sel);
 const params = new URLSearchParams(location.search);
 const pid = params.get("PROLIFIC_PID") || params.get("pid") || ("P" + Math.random().toString(36).slice(2, 10));
 const rng = mulberry32(hashStr(pid));
-const data = { pid, study: params.get("STUDY_ID") || "", session: params.get("SESSION_ID") || "",
+const data = { pid, version: CONFIG.version, study: params.get("STUDY_ID") || "", session: params.get("SESSION_ID") || "",
                started: new Date().toISOString(), ua: navigator.userAgent,
                screen: [screen.width, screen.height, devicePixelRatio], trials: [], demographics: {} };
 
@@ -159,6 +159,7 @@ async function main() {
   window.addEventListener("resize", () => player.resize());
   plan = buildTrials();
   data.plan_seed = hashStr(pid);
+  $("#version").textContent = "v" + CONFIG.version;
 
   show("consent");
   $("#mobile-warn").hidden = !(/Mobi|Android|iPhone|iPad/i.test(navigator.userAgent) || Math.min(screen.width, screen.height) < 600);

@@ -1,5 +1,7 @@
 // Everything an experimenter may want to change.  See PROTOCOL.md.
 export const CONFIG = {
+  // Bump whenever trials, stimuli or wording change; shown on the page and saved with the data.
+  version: "2026-11-07a",
   // Data upload: DataPipe (https://pipe.jspsych.org) experiment ID, linked to an OSF project.
   // Leave empty to save the data as a file download at the end.
   datapipeId: "",
