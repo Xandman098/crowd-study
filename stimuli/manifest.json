@@ -1,5 +1,5 @@
 {
- "clip_ticks": 64,
+ "clip_ticks": 80,
  "dt": 0.25,
  "conditions": {
   "full": {
@@ -18,6 +18,14 @@
    "allocator": "proxy",
    "beta": 0.125
   },
+  "proxy_b4": {
+   "allocator": "proxy",
+   "beta": 0.25
+  },
+  "proxy_b2": {
+   "allocator": "proxy",
+   "beta": 0.5
+  },
   "round_robin_b16": {
    "allocator": "round_robin",
    "beta": 0.0625
@@ -25,6 +33,14 @@
   "round_robin_b8": {
    "allocator": "round_robin",
    "beta": 0.125
+  },
+  "round_robin_b4": {
+   "allocator": "round_robin",
+   "beta": 0.25
+  },
+  "round_robin_b2": {
+   "allocator": "round_robin",
+   "beta": 0.5
   },
   "camera_lod_b16": {
    "allocator": "camera_lod",
@@ -34,6 +50,14 @@
    "allocator": "camera_lod",
    "beta": 0.125
   },
+  "camera_lod_b4": {
+   "allocator": "camera_lod",
+   "beta": 0.25
+  },
+  "camera_lod_b2": {
+   "allocator": "camera_lod",
+   "beta": 0.5
+  },
   "ng2005_w1_b16": {
    "allocator": "ng2005_w1",
    "beta": 0.0625
@@ -41,6 +65,14 @@
   "ng2005_w1_b8": {
    "allocator": "ng2005_w1",
    "beta": 0.125
+  },
+  "ng2005_w1_b4": {
+   "allocator": "ng2005_w1",
+   "beta": 0.25
+  },
+  "ng2005_w1_b2": {
+   "allocator": "ng2005_w1",
+   "beta": 0.5
   }
  },
  "seeds": [
@@ -183,7 +215,23 @@
        5.24,
        5.3,
        5.359999999999999,
-       5.42
+       5.42,
+       5.48,
+       5.54,
+       5.6,
+       5.66,
+       5.72,
+       5.779999999999999,
+       5.84,
+       5.9,
+       5.96,
+       6.02,
+       6.08,
+       6.14,
+       6.2,
+       6.26,
+       6.32,
+       6.38
       ]
      }
     ]
@@ -341,7 +389,23 @@
        5.24,
        5.3,
        5.359999999999999,
-       5.42
+       5.42,
+       5.48,
+       5.54,
+       5.6,
+       5.66,
+       5.72,
+       5.779999999999999,
+       5.84,
+       5.9,
+       5.96,
+       6.02,
+       6.08,
+       6.14,
+       6.2,
+       6.26,
+       6.32,
+       6.38
       ]
      }
     ]

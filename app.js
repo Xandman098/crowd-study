@@ -29,17 +29,16 @@ async function clip(scen, cond, seed) {
 }
 
 function buildTrials() {
-  const A = [];
+  const A = [], D = CONFIG.detection, P = CONFIG.preference;
   for (const s of CONFIG.scenarios) {
-    for (let rep = 0; rep < CONFIG.repetitions; rep++) {
-      for (const k of CONFIG.budgets) {
-        for (const m of CONFIG.methods) {
-          if (m !== CONFIG.ours) A.push({ part: "A", type: "preference", scen: s, beta: 1 / k, pair: [`${CONFIG.ours}_b${k}`, `${m}_b${k}`] });
-        }
-        for (const m of CONFIG.methods) A.push({ part: "A", type: "detection", scen: s, beta: 1 / k, pair: ["full", `${m}_b${k}`] });
-      }
+    for (let rep = 0; rep < D.repetitions; rep++)
+      for (const m of D.methods) for (const k of D.budgets)
+        A.push({ part: "A", type: "detection", scen: s, beta: 1 / k, pair: ["full", `${m}_b${k}`] });
+    for (let rep = 0; rep < P.repetitions; rep++)
+      for (const [m, ks] of P.pairs) for (const k of ks)
+        A.push({ part: "A", type: "preference", scen: s, beta: 1 / k, pair: [`${CONFIG.ours}_b${k}`, `${m}_b${k}`] });
+    for (let rep = 0; rep < CONFIG.catchPerScenario; rep++)
       A.push({ part: "A", type: "catch", scen: s, beta: 0, pair: ["full", "none"] });
-    }
   }
   for (const t of A) {
     [t.seedTop, t.seedBottom] = pick2(manifest.seeds);
