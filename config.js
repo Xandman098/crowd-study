@@ -16,7 +16,7 @@ export const CONFIG = {
   // lowest such budgets), so the choice is about how people react, not whether they do.
   preference: { pairs: [["round_robin", [8, 4]], ["camera_lod", [4, 2]], ["ng2005_w1", [2]]], repetitions: 2 },
   catchPerScenario: 2,                    // full vs all-L0
-  ratingConditions: ["full", "proxy_b8", "round_robin_b8", "camera_lod_b8", "ng2005_w1_b8", "none"],
+  ratingConditions: ["full", "proxy_b16", "round_robin_b16", "camera_lod_b16", "ng2005_w1_b16", "none"],
   maxReplays: 1,
   breakEvery: 18,
   camera: { elevationDeg: 52, vfovDeg: 42, fill: 1.08 },

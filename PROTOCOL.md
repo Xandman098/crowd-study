@@ -12,7 +12,7 @@ and `round_robin` at β = 1/16, both started from a seed different from the top 
 
 ## 1. Design
 
-Within-subject, two parts, about 30 minutes, run in the browser (desktop/laptop only).
+Within-subject, two parts, about 40 minutes, run in the browser (desktop/laptop only).
 
 **Part 1: match to sample (56 trials).** The upper clip is the full simulation (all agents at
 L3) with seed *a*. The two lower clips start from the same different seed *b*; the participant
@@ -45,7 +45,17 @@ The revised design asks two sharper questions:
 
 **Part 2: plausibility (12 trials).** One clip, "How realistic is the behaviour of this crowd?"
 on a 1–7 scale. Conditions: full, `proxy`, `round_robin`, `camera_lod`, `ng2005_w1` (all at
-β = 1/8), and all-L0, for each of the 2 scenarios.
+β = 1/16), and all-L0, for each of the 2 scenarios.
+
+**Why β = 1/16 for ratings (revised after pilots 2–4).** The numerical headline is at β = 1/16,
+so that is the budget at which plausibility has to be judged. Part 1 cannot show it: at 1/16
+detection is at ceiling for every method, `proxy` included, so the large difference (the
+baselines' visible crowds do not react, `proxy`'s does) is invisible in accuracy, and preference
+avoids that budget on purpose. A single-clip rating has no comparison to make trivial. The
+first version rated at β = 1/8, where round robin already reacts and was rated as high as the
+full simulation; that told us nothing about the budget the paper is about. Pilots also showed
+that at β ≥ 1/4 round robin is hard to tell from `proxy` even for the experimenters; H1 against
+round robin is kept as specified, and a null result there will be reported as such.
 
 **Factors.**
 - Scenarios: `offscreen_alarm` (the fire starts outside the view and the alarm spreads in) and
@@ -71,7 +81,7 @@ only after the clip ends.
   often than chance against each baseline.
 - **H2.** Telling the full simulation apart is harder for `proxy` than for each baseline:
   detection accuracy pooled over the budget ladder is lower for `proxy` (paired, one-sided).
-- **H3.** At β = 1/8, `proxy` is rated more plausible than each baseline.
+- **H3.** At β = 1/16, `proxy` is rated more plausible than each baseline.
 
 Descriptive (reported, not tested): the detection curve per method, i.e. accuracy at each budget
 and the lowest budget whose 95% CI includes 0.5. Also effects by scenario, and response times.
@@ -148,7 +158,7 @@ service, so no OSF/DataPipe dependency.
 
 1. **Stimuli.**
    - Run `python scripts/make_stimuli.py` (part of `scripts/rerun_all.py`). This writes
-     `perception/stimuli/` (≈ 15 MB of JSON, 120 clips).
+     `perception/stimuli/` (≈ 36 MB of JSON, 216 clips).
    - Stimuli must come from the same model version as the paper's numbers
      (`results/MODEL_VERSION`).
 2. **Local test.**
@@ -179,23 +189,35 @@ service, so no OSF/DataPipe dependency.
 ## 7. Pilot
 
 Run 4–6 people, not counted in the main sample. Check:
-- duration (target ≤ 30 min);
+- duration (target ≤ 45 min);
 - that catch trials are ≥ 90% correct (if not, the task or instructions are unclear);
 - that no trial type is at ceiling or floor for every method (if `camera_lod` detection is
   ≈ 1.0 and `proxy` ≈ 1.0 as well, the clips are too long or too zoomed);
 - the post-session comments.
 
-Adjust only clip timing, camera or instructions, then freeze `config.js` and the stimuli, and
-pre-register.
+Adjust only clip timing, camera, instructions or which budgets are shown, then freeze
+`config.js` and the stimuli, and pre-register.
+
+Pilot log:
+- Pilot 1: every trial type at ceiling; detection and preference reduced to "which crowd
+  evacuates". Changed to the budget ladder, preference only where both crowds react, 20 s clips.
+- Pilots 2–4 (X001, X002, one without ID): catch 12/12; 39–68 min; detection of `proxy` falls
+  to about chance at β = 1/4–1/2 while the baselines stay higher; preference against round
+  robin at chance; one participant answered most trials within 2 s of the clip ending and never
+  replayed. Changed: ratings moved from β = 1/8 to 1/16 (see section 1), and a sentence asking
+  participants to watch each clip to the end was added before Part 1.
 
 ## 8. Threats and limits
 
-- Viewers judge a 16 s window from a fixed camera. The study says nothing about long-horizon
+- Viewers judge a 20 s window from a fixed camera. The study says nothing about long-horizon
   drift; the trajectory metrics cover that.
 - The renderer is deliberately plain (instanced figures, no animation blending). This makes
   differences in *behaviour* easier to see than in a game engine with rich animation, so the
   study is conservative for our claim that differences are hard to notice. It is
   anti-conservative only if rendering artefacts correlate with method; positions and headings
   are drawn identically for all methods.
-- Only two scenarios and two budgets are tested; choose them before seeing any perceptual data
-  (done: they are fixed in `config.js`).
+- Only two scenarios and four budgets are tested. They were adjusted after the pilots (section
+  7) and are frozen in `config.js` before the main sample.
+- Agents at L0 walk straighter than at L3 (mean heading change 3.1–4.0° vs 4.5–4.9° per tick
+  in the stimuli). Attentive viewers can use this cue, which keeps `proxy` detectable at low
+  budgets even when its crowd reacts like the full simulation.
