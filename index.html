@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>人群行为研究</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  [hidden] { display: none !important; }
+  html, body { margin: 0; height: 100%; font-family: system-ui, "PingFang SC", "Microsoft YaHei", sans-serif; background: #fff; color: #222; }
+  .page { max-width: 760px; margin: 6vh auto; line-height: 1.7; padding: 0 1em; }
+  #trial { max-width: none; margin: 0; height: 100vh; display: flex; flex-direction: column; padding: 0; }
+  #trial header { display: flex; justify-content: space-between; padding: 6px 14px; font-size: 14px; color: #555; }
+  #stage { position: relative; flex: 1; min-height: 0; }
+  #canvas { width: 100%; height: 100%; display: block; }
+  #labels div { position: absolute; font-weight: 600; background: rgba(255,255,255,.85); padding: 2px 8px; border-radius: 4px; }
+  #labels.one div { display: none; }
+  #labels.three .l-top { top: 6px; left: 26%; } #labels.three .l-a { top: 52%; left: 1%; } #labels.three .l-b { top: 52%; left: 51.5%; }
+  #controls { min-height: 84px; display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 8px; }
+  #question { font-size: 18px; }
+  button { font-size: 17px; padding: 8px 22px; margin: 0 6px; cursor: pointer; }
+  #answer-rating button { padding: 8px 14px; }
+  .scale { display: flex; align-items: center; gap: 6px; }
+  #feedback { color: #a33; min-height: 1.2em; }
+  label { display: block; margin: .6em 0; }
+  .warn { color: #a33; }
+</style>
+</head>
+<body>
+
+<section class="page" id="consent" hidden>
+  <h2>人群行为研究 · 知情同意</h2>
+  <p><b>[研究机构、伦理审批编号、联系人及联系方式——使用前请填写]</b></p>
+  <p>你将观看一些由计算机生成的短动画，内容是公共场所发生火灾时人群的反应，并回答一些简单的问题。
+     实验约需 30 分钟。除少数注意力检查题外，所有问题都没有对错之分。</p>
+  <p>我们会记录你的回答、反应时间以及浏览器和屏幕尺寸，不收集任何可识别你身份的个人信息。
+     你可以随时关闭页面退出实验，未完成的数据不会被使用。</p>
+  <p><b>请使用笔记本或台式电脑，并将浏览器窗口最大化或全屏（按 F11）；请勿使用手机或平板。</b>
+     请在安静、不被打扰的环境中一次完成。</p>
+  <p id="mobile-warn" class="warn" hidden>检测到你可能在使用手机或平板，请换用电脑打开本页面。</p>
+  <button id="btn-consent">我已阅读并同意参加</button>
+</section>
+
+<section class="page" id="instructions" hidden>
+  <h2>说明</h2>
+  <p>动画中的场所里某处发生了火灾。火源可能在画面之外，你常常只能看到人们对它的反应。</p>
+  <p><b>第一部分。</b>每次会同时播放三段动画。<b>上方</b>那段是参照。<b>下方</b>两段（A 和 B）是同一地点、同一时间段，
+     但人员的初始位置和上方不同，所以<b>不要去找一模一样的人</b>。请判断下方哪一段的人群<b>表现得更像上方的参照</b>：
+     谁有反应、什么时候反应、走得多快、往哪里走。</p>
+  <p>每段动画播放一次（16 秒），可以重播一次。播放结束后再用按钮作答。</p>
+  <p><b>第二部分。</b>每次只播放一段动画，请为人群行为的真实程度打分。</p>
+  <p>先做两道练习题。</p>
+  <button id="btn-start-practice">开始练习</button>
+</section>
+
+<section class="page" id="start-a" hidden>
+  <h2>第一部分</h2><p>练习结束。第一部分约有 60 道题，每 20 道可以休息一次。</p>
+  <button id="btn-start-a">开始</button>
+</section>
+<section class="page" id="pause" hidden><h2>休息一下</h2><p>准备好后点击继续。</p><button id="btn-continue">继续</button></section>
+<section class="page" id="start-b" hidden>
+  <h2>第二部分</h2><p>接下来每次只播放一段动画。请评价人群行为有多真实，
+  1 表示完全不真实，7 表示完全真实。</p><button id="btn-start-b">开始</button>
+</section>
+
+<section class="page" id="trial" hidden>
+  <header><span id="trial-progress"></span><span id="feedback"></span></header>
+  <div id="stage">
+    <canvas id="canvas"></canvas>
+    <div id="labels" class="three"><div class="l-top">参照</div><div class="l-a">A</div><div class="l-b">B</div></div>
+  </div>
+  <div id="controls">
+    <div id="question"></div>
+    <div id="answer-ab" hidden><button id="btn-left">A</button><button id="btn-right">B</button></div>
+    <div id="answer-rating" class="scale" hidden>
+      <span>完全不真实</span>
+      <button id="r1">1</button><button id="r2">2</button><button id="r3">3</button><button id="r4">4</button>
+      <button id="r5">5</button><button id="r6">6</button><button id="r7">7</button>
+      <span>完全真实</span>
+    </div>
+    <button id="btn-replay" hidden>重播</button>
+  </div>
+</section>
+
+<section class="page" id="demographics" hidden>
+  <h2>关于你</h2>
+  <label>年龄 <input name="age" type="number" min="18" max="99"></label>
+  <label>性别 <select name="gender"><option value=""></option><option value="female">女</option><option value="male">男</option><option value="other">其他</option><option value="na">不愿透露</option></select></label>
+  <label>你玩电子游戏的频率 <select name="games"><option value=""></option><option value="never">从不</option><option value="yearly">一年几次</option><option value="monthly">每月</option><option value="weekly">每周</option><option value="daily">每天</option></select></label>
+  <label>计算机图形学或动画方面的经验 <select name="cg"><option value=""></option><option value="none">没有</option><option value="some">有一些</option><option value="pro">专业或科研</option></select></label>
+  <label>其他意见（选填） <input name="comments" size="60"></label>
+  <button id="btn-demo">完成</button>
+</section>
+
+<section class="page" id="saving" hidden><p>正在保存……</p></section>
+<section class="page" id="done" hidden>
+  <h2>谢谢参与！</h2><p id="done-msg"></p>
+  <p><button id="btn-redownload" hidden>重新下载结果文件</button></p>
+</section>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>
